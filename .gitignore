@@ -1,0 +1,19 @@
+# Env / secrets — this repo is public, nothing sensitive may be committed
+.env
+*.tfvars
+*.json.key
+
+# Go
+/bin/
+coverage.out
+
+# Terraform
+.terraform/
+*.tfstate
+*.tfstate.*
+.terraform.lock.hcl
+
+# OS / editor
+.DS_Store
+.idea/
+.vscode/
