@@ -2,9 +2,9 @@
 
 ## Current position
 
-- **Phase**: 0 (Skeleton & infrastructure) — design approved, awaiting Jeff's spec review,
-  then implementation step plan
-- **Current task**: Jeff reviews `docs/knowledge/discussions/2026-07-13-phase0-design.md`
+- **Phase**: 0 (Skeleton & infrastructure) — spec approved by Jeff; implementation plan
+  ready at `docs/plans/2026-07-13-phase0.md` (13 tasks, one PR each, Jeff implements)
+- **Current task**: Jeff starts plan Task 0 (toolchain) and Task 1 (GitHub repo + PR flow)
 
 ## Verified done
 
