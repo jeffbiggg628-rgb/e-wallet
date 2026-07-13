@@ -92,9 +92,13 @@ Rules:
 
 ## Language & deliverables
 
-- Conversation with Jeff: Traditional Chinese is fine.
-- Everything committed to the repo is **English**: README, design docs, ADRs,
-  postmortems, commit messages, code comments, knowledge-base content.
+- Conversation with Jeff: Traditional Chinese.
+- **Working documents for Jeff (`docs/plans/**`) are written in Traditional Chinese**,
+  with fine-grained steps that also explain the underlying concepts (why this tool, why
+  this structure) — Jeff knows Go syntax but is new to project architecture and the
+  toolchain, and clarity for him beats the English-repo rule here.
+- Portfolio deliverables stay **English**: README, design docs, ADRs, postmortems,
+  commit messages, code comments, knowledge-base content.
 
 ## Engineering alignment
 
