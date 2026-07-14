@@ -7,7 +7,7 @@ created: 2026-07-13
 status: approved
 ---
 
-# Phase 0 Design — Skeleton & Infrastructure
+# Phase 0 Design — Skeleton & Infrastructure dd
 
 Source: brainstorming session between Jeff and Claude, 2026-07-13. All decisions below
 were approved by Jeff section by section. Governing spec: `docs/ewallet-portfolio-plan.md`
