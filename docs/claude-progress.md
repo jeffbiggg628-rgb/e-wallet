@@ -32,8 +32,9 @@
 
 -(留待 Phase 3 前)雲端 Kafka 部署方式:GCP Managed Service for
   Apache Kafka vs GKE 自架單節點,以 ADR 定案(ADR 0002 決策第 3 點)。
-- Jeff 機器上佔 9092 的舊專案程序(java PID 11799/17092、ssh tunnel)
-  要不要關,由 Jeff 決定;我們已改用 19092 不受影響。
+-(已解決 2026-07-15)9092 汙染源是搶票系統的 order/seckill 兩個殘留
+  服務(跑了 12 天),Jeff 拍板關閉;lsof 裡的 ssh 是 Colima 的
+  port-forward 不是 tunnel,未動。Kafka 維持 9092,auto-create 關閉。
 
 ## 協作提醒
 
