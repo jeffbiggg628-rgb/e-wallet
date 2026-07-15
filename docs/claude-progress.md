@@ -4,12 +4,18 @@
 
 - **Phase**:0(骨架與基礎設施)——實作計畫 `docs/plans/2026-07-15-phase0.md`,
   6 個 Task,一個 Task 一個 PR。
-- **Current task**:Task 3(CI)完成並開 PR #5(feat/ci-pipeline),
-  CI 三 job 首跑全綠;等 Jeff review 後 merge,接 Task 4(Terraform)。
+- **Current task**:Task 4(Terraform)完成並開 PR #6
+  (feat/terraform-gcp-base),CI 四 job 全綠(含新 tf-validate);
+  等 Jeff review 後 merge,接 Task 5(雲端驗證一輪 + 證據)。
 
 ## Verified done
 
-- 2026-07-15:**Task 3** 完成(PR #5)——multi-stage Dockerfile(JRE runtime、
+- 2026-07-15:**Task 4** 完成(PR #6)——GCP 專案 `e-wallet-portfolio-4291`
+  建立並綁計費、versioned state bucket、Terraform 定義 15 資源
+  (Artifact Registry、GKE Autopilot @ asia-east1、Cloud SQL MySQL 8、
+  workload identity SA);`terraform plan` 15 to add 零錯誤(未 apply);
+  CI 加 tf-validate 並納入 required checks;lock file 改為進 git。
+- 2026-07-15:**Task 3** 完成(PR #5,已 merge)——multi-stage Dockerfile(JRE runtime、
   非 root)、GitHub Actions 三 job(lint 27s / test 1m07s / build-image 1m01s
   首跑全綠)、main ruleset 加上三個 required status checks(gh api 設定)。
   本地 image 實測:連 compose MySQL、health UP、whoami=appuser。
@@ -31,9 +37,9 @@
 
 ## Next up
 
-- Task 4:Terraform GCP 基礎(GCS backend、Artifact Registry、
-  GKE Autopilot @ asia-east1、Cloud SQL MySQL 8、workload identity SA)
-  + CI 加 tf-validate job。需要 Jeff 的 GCP 專案資訊與 gcloud 登入。
+- Task 5:雲端驗證一輪(terraform apply → push image → GKE 部署
+  → health check → destroy)+ 證據文件 + k8s manifests。
+  預估花費 $1–3(從 $300 額度),一輪約 2–3 小時(多為等待)。
 
 ## Open questions
 
