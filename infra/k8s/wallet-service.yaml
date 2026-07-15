@@ -1,0 +1,14 @@
+# ClusterIP only: Phase 0 verification uses kubectl port-forward.
+# No LoadBalancer — nothing public, nothing billed for ingress.
+apiVersion: v1
+kind: Service
+metadata:
+  name: wallet
+  namespace: default
+spec:
+  type: ClusterIP
+  selector:
+    app: wallet
+  ports:
+    - port: 80
+      targetPort: 8080
