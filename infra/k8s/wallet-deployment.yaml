@@ -1,0 +1,60 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: wallet
+  namespace: default
+  labels:
+    app: wallet
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: wallet
+  template:
+    metadata:
+      labels:
+        app: wallet
+    spec:
+      serviceAccountName: wallet
+      containers:
+        - name: wallet
+          image: asia-east1-docker.pkg.dev/e-wallet-portfolio-4291/e-wallet/wallet:phase0
+          ports:
+            - containerPort: 8080
+          env:
+            # Cloud SQL is reached through the proxy sidecar on localhost.
+            - name: DB_URL
+              value: jdbc:mysql://127.0.0.1:3306/wallet
+            - name: DB_USERNAME
+              value: wallet
+            - name: DB_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: wallet-db
+                  key: password
+          resources:
+            requests:
+              cpu: 500m
+              memory: 1Gi
+            limits:
+              memory: 1Gi
+          readinessProbe:
+            httpGet:
+              path: /actuator/health
+              port: 8080
+            initialDelaySeconds: 20
+            periodSeconds: 5
+        # IAM-authenticated tunnel to Cloud SQL; no DB ports exposed to the world.
+        - name: cloud-sql-proxy
+          image: gcr.io/cloud-sql-connectors/cloud-sql-proxy:2.14.0
+          args:
+            - "--port=3306"
+            - "e-wallet-portfolio-4291:asia-east1:e-wallet-mysql"
+          securityContext:
+            runAsNonRoot: true
+          resources:
+            requests:
+              cpu: 250m
+              memory: 256Mi
+            limits:
+              memory: 256Mi

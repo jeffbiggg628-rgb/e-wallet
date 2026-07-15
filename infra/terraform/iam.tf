@@ -15,8 +15,12 @@ resource "google_project_iam_member" "wallet_cloudsql_client" {
 }
 
 # Allow the KSA default/wallet to impersonate the GCP SA.
+# The workload identity pool (<project>.svc.id.goog) only comes into existence
+# when the project's first GKE cluster is created — bind after the cluster.
 resource "google_service_account_iam_member" "wallet_workload_identity" {
   service_account_id = google_service_account.wallet_app.name
   role               = "roles/iam.workloadIdentityUser"
   member             = "serviceAccount:${var.project_id}.svc.id.goog[default/wallet]"
+
+  depends_on = [google_container_cluster.main]
 }

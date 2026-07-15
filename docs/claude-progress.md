@@ -4,13 +4,18 @@
 
 - **Phase**:0(骨架與基礎設施)——實作計畫 `docs/plans/2026-07-15-phase0.md`,
   6 個 Task,一個 Task 一個 PR。
-- **Current task**:Task 4(Terraform)完成並開 PR #6
-  (feat/terraform-gcp-base),CI 四 job 全綠(含新 tf-validate);
-  等 Jeff review 後 merge,接 Task 5(雲端驗證一輪 + 證據)。
+- **Current task**:Task 5(雲端驗證)完成並開 PR #7
+  (feat/cloud-verification),CI 四 job 全綠;等 Jeff review 後 merge,
+  接 Task 6(ADR 0003 架構總覽,Phase 0 收尾)。
 
 ## Verified done
 
-- 2026-07-15:**Task 4** 完成(PR #6)——GCP 專案 `e-wallet-portfolio-4291`
+- 2026-07-15:**Task 5** 完成(PR #7)——完整 apply→push→deploy→verify→
+  destroy 一輪:GKE 上 pod 2/2 Running、health UP、Flyway 在 Cloud SQL
+  完成 V1、15 資源 destroy 歸零(gcloud 實查)。事故:WI pool 隱式依賴
+  第一個 GKE 叢集 → 綁定 400,已修(iam.tf depends_on)並記錄於
+  docs/design/phase0-cloud-verification.md。花費估 <$1,實際數字待回填。
+- 2026-07-15:**Task 4** 完成(PR #6,已 merge)——GCP 專案 `e-wallet-portfolio-4291`
   建立並綁計費、versioned state bucket、Terraform 定義 15 資源
   (Artifact Registry、GKE Autopilot @ asia-east1、Cloud SQL MySQL 8、
   workload identity SA);`terraform plan` 15 to add 零錯誤(未 apply);
@@ -37,9 +42,11 @@
 
 ## Next up
 
-- Task 5:雲端驗證一輪(terraform apply → push image → GKE 部署
-  → health check → destroy)+ 證據文件 + k8s manifests。
-  預估花費 $1–3(從 $300 額度),一輪約 2–3 小時(多為等待)。
+- Task 6:ADR 0003 架構總覽(Phase 0 DoD 文件)+ 對 DoD 四點逐條核對
+  + README 骨架。完成後 Phase 0 收尾,開始 Phase 1 設計討論
+  (ledger/transfer/冪等機制)。
+- 待辦:GCP Billing 結算後把 Task 5 實際花費回填
+  docs/design/phase0-cloud-verification.md。
 
 ## Open questions
 
