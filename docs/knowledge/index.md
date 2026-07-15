@@ -5,7 +5,9 @@
 
 ## wiki/ (compiled knowledge)
 
-_空——設計討論與 PR 導讀產生耐久教訓後,經 write-back loop 加入。_
+- [flyway-schema-migration.md](wiki/flyway-schema-migration.md) —
+  Flyway 是什麼:schema drift 問題、檔名即版本/DB 記帳/舊腳本不可改
+  三機制、與 ledger append-only 哲學的呼應、面試問答(vs Liquibase)。
 
 ## discussions/ (kept Q&A records)
 

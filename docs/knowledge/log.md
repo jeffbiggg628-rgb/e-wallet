@@ -2,6 +2,9 @@
 
 Chronological update history, newest first.
 
+- 2026-07-15:新增 wiki/flyway-schema-migration.md——Jeff 提問「Flyway
+  是幹嘛的」的 write-back;wiki 第一篇。
+
 - 2026-07-15:新增 discussions/2026-07-15-phase0-java-design.md——
   Java 版 Phase 0 設計定案(Maven 多模組、純慣例邊界、Kafka、
   apply-verify-destroy)。事件層改 Kafka 記錄於 ADR 0002。
