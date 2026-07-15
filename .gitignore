@@ -7,11 +7,10 @@
 target/
 *.class
 
-# Terraform
+# Terraform (.terraform.lock.hcl IS committed — provider version pinning)
 .terraform/
 *.tfstate
 *.tfstate.*
-.terraform.lock.hcl
 
 # OS / editor
 .DS_Store
