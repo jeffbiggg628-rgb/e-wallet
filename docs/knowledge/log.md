@@ -2,6 +2,9 @@
 
 Chronological update history, newest first.
 
+- 2026-07-15:新增 discussions/2026-07-15-phase0-java-design.md——
+  Java 版 Phase 0 設計定案(Maven 多模組、純慣例邊界、Kafka、
+  apply-verify-destroy)。事件層改 Kafka 記錄於 ADR 0002。
 - 2026-07-15:專案轉向(ADR 0001)——目標市場改台灣、技術棧改
   Java 21 / Spring Boot 3 / MyBatis、協作模式改為 Claude 實作 + PR 導讀、
   文件全面中文化。知識庫重新定位為面試素材庫;index.md 已更新,

@@ -2,30 +2,32 @@
 
 ## Current position
 
-- **Phase**:專案轉向完成(2026-07-15)——目標市場改台灣、技術棧改
-  Java 21 + Spring Boot 3 + MyBatis、協作模式改為 Claude 實作 + PR 導讀。
-  詳見 `docs/adr/0001-pivot-to-java-taiwan.md`。
-- **Current task**:與 Jeff 討論 Java 版 Phase 0 設計
-  (Gradle monorepo 結構、Spring Boot 骨架、docker-compose、Flyway、
-  Terraform、CI),定案後重寫 Phase 0 實作計畫。
+- **Phase**:0(骨架與基礎設施)——設計已定案並經 Jeff 批准
+  (`docs/knowledge/discussions/2026-07-15-phase0-java-design.md`),
+  事件層改用 Kafka(ADR 0002)。
+- **Current task**:撰寫 Java 版 Phase 0 實作計畫(`docs/plans/`,
+  以 PR 為單位切分,Claude 實作視角),完成後開始 Task 執行。
 
 ## Verified done
 
-- 2026-07-15:轉向文件全部改寫完成——ADR 0001、
-  `docs/ewallet-portfolio-plan.md`(Java 版)、`CLAUDE.md`(新協作模式)、
-  知識庫 index/log 更新。原 Go 版 Phase 0 計畫標記作廢。
-- 2026-07-13:Repo 初始化(CLAUDE.md、計畫文件、知識庫骨架)。尚無程式碼。
+- 2026-07-15:Phase 0 架構討論完成——Maven 多模組(依部署單位切)、
+  wallet 內部 api/internal 純慣例邊界(Jeff 否決驗證工具)、
+  compose(MySQL 8 + Kafka KRaft)、CI 三 job、apply-verify-destroy 沿用、
+  事件層 Pub/Sub → Kafka(ADR 0002)。相關文件全部更新並提交。
+- 2026-07-15:專案轉向(ADR 0001)——台灣市場、Java 21 + Spring Boot 3 +
+  MyBatis + Maven、Claude 實作 + PR 導讀、文件全中文化。
+- 2026-07-13:Repo 初始化。尚無程式碼。
 
 ## Next up
 
-- Java 版 Phase 0 設計討論:Gradle 專案佈局(單 repo 多模組 vs 單模組)、
-  Spring Boot 版本與起手依賴、本地開發環境(docker-compose:MySQL 8 +
-  Pub/Sub emulator)、CI job 切分、Terraform 最小成本策略是否沿用
-  (apply-verify-destroy)。
-- 定案後重寫 `docs/plans/` 下的 Phase 0 實作計畫(中文,Claude 實作視角:
-  以 PR 為單位切分,每個 PR 附導讀)。
+- 寫 Phase 0 實作計畫並開始執行第一個 PR(Maven parent + wallet 骨架)。
 
 ## Open questions
 
-- 原 Go 版 Phase 0 設計中的最小成本 Terraform 策略($300 GCP credits,
-  apply-verify-destroy)是否沿用?待 Phase 0 設計討論時與 Jeff 確認。
+-(留待 Phase 3 前)雲端 Kafka 部署方式:GCP Managed Service for
+  Apache Kafka vs GKE 自架單節點,以 ADR 定案(ADR 0002 決策第 3 點)。
+
+## 協作提醒
+
+- Jeff 不熟 Kafka:動用 Kafka 的討論與 PR 導讀要從零講解概念,
+  並編纂進知識庫 wiki(CLAUDE.md、ADR 0002)。

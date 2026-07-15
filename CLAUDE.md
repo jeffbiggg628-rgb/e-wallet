@@ -3,8 +3,8 @@
 ## 這個專案是什麼
 
 以 Java 打造的 e-wallet 後端,作為台灣後端求職作品集
-(金融/支付/電商金流領域對口)。技術棧:Java 21 + Spring Boot 3 +
-MyBatis + REST/OpenAPI + GCP(GKE、Cloud SQL MySQL 8、Pub/Sub)+ Terraform。
+(金融/支付/電商金流領域對口)。技術棧:Java 21 + Spring Boot 3(Maven)+
+MyBatis + REST/OpenAPI + Kafka + GCP(GKE、Cloud SQL MySQL 8)+ Terraform。
 
 權威規格是 **`docs/ewallet-portfolio-plan.md`**。開始任何任務前,至少先讀
 其 §2(範圍邊界)、§4(不變量)、§6(里程碑)。任何事與該文件衝突時,
@@ -22,6 +22,10 @@ MyBatis + REST/OpenAPI + GCP(GKE、Cloud SQL MySQL 8、Pub/Sub)+ Terraform。
   2. 關鍵決策在哪、為什麼這樣做(含被否決的替代方案)
   3. 面試可能怎麼問、怎麼答
   Jeff 理解並批准後才 merge——**理解深度不外包**。
+- **Kafka 講解義務**(ADR 0002):Jeff 不熟 Kafka。凡動用 Kafka 的
+  設計討論與 PR 導讀,概念必須從零講起(topic、partition、
+  consumer group、offset、delivery semantics……),並隨進度把概念頁
+  編纂進知識庫 wiki 供面試前複習。
 
 ### 交付前自我檢查清單(每個 PR 適用)
 
@@ -88,5 +92,5 @@ docs/knowledge/
 
 設計模式與技術選型對齊台灣金融/支付業主流實務(plan §3.2):
 modular monolith(package + interface 劃分模組邊界)、REST + OpenAPI、
-MyBatis 顯式 SQL、outbox + Pub/Sub、OpenTelemetry。
+MyBatis 顯式 SQL、outbox + Kafka、OpenTelemetry。
 禁止計畫外的 cleverness;任何新依賴先寫 ADR。

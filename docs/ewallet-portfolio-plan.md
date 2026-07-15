@@ -32,12 +32,12 @@
 - **Boring Java**:Java 21 LTS + Spring Boot 3,標準做法優先。允許的核心依賴:
   `spring-boot-starter-web`(REST)、`mybatis-spring-boot-starter`(型別安全
   顯式 SQL)、`mysql-connector-j`、`flyway`(schema 遷移)、
-  `springdoc-openapi`(API 文件)、Google Cloud Pub/Sub client、
-  `micrometer` + OpenTelemetry 系列;測試允許 JUnit 5、Testcontainers、
-  AssertJ、Awaitility。**新增任何其他第三方依賴前,必須先在 ADR 中說明理由**
+  `springdoc-openapi`(API 文件)、`spring-kafka`(事件層,見 ADR 0002)、
+  `micrometer` + OpenTelemetry 系列;測試允許 JUnit 5、Testcontainers
+  (含 Kafka module)、AssertJ、Awaitility。**新增任何其他第三方依賴前,必須先在 ADR 中說明理由**
   (含 Lombok——預設不用,要用先寫 ADR)。
-- **工具鏈**:Gradle(建置)、Spotless + Checkstyle(格式與靜態檢查,進 CI)、
-  GitHub Actions、Terraform。
+- **工具鏈**:Maven(建置;台灣金融業主流)、Spotless + Checkstyle
+  (格式與靜態檢查,進 CI)、GitHub Actions、Terraform。
 - **明確不做(non-goals)**:前端(以 Swagger UI / Postman collection 作為介面)、
   完整 auth(最簡 JWT 即可)、多區域部署、災備、KYC/法遵。
   這些統一寫進 README 的「Production readiness gaps」章節,展示邊界意識。
@@ -57,7 +57,7 @@
                       └──────────┬───────────────┘
                                  │ outbox relay
                                  ▼
-                          GCP Pub/Sub (events)
+                           Kafka (events)
                                  │
               ┌──────────────────┴──────────────┐
               ▼                                 ▼
@@ -67,14 +67,15 @@
    └────────────────────┘            └────────────────────┘
 
    Infra: GKE (deployables) + Cloud SQL for MySQL 8 (state)
-          + Pub/Sub (events) + Terraform (all of the above)
+          + Kafka (events;本地 docker,雲端部署 Phase 3 前以 ADR 定案)
+          + Terraform (all of the above)
    Observability: OpenTelemetry → Prometheus / Grafana(自架於 GKE)
 ```
 
 - 對外同步介面用 REST,以 OpenAPI 規格為契約(springdoc 自動產出並進 CI 驗證)。
 - wallet 內部模組邊界以 Java package + 明確定義的 interface 劃分
   (禁止跨模組直接存取彼此的 mapper / table)。
-- 服務間非同步一律走 Pub/Sub 事件,事件為 JSON,schema 版本化
+- 服務間非同步一律走 Kafka 事件,事件為 JSON,schema 版本化
   (payload 內含 `schema_version` 欄位)。
 - 資料庫:每模組獨立 schema(同一個 Cloud SQL for MySQL 實例,省成本)。
 
@@ -99,7 +100,7 @@ reconciler 與(選配的)redpacket 才是獨立 deployable。
 | REST + OpenAPI | 台灣市場主流介面風格 | OpenAPI 規格即契約,進 CI |
 | MySQL 8(Cloud SQL) | 台灣 web 業界主流 | 顯式 SQL、明確索引與鎖策略 |
 | GKE + Terraform + GitHub Actions | 與 GCP PCA 證照互相背書 | Jeff 指定保留 GCP |
-| Pub/Sub 事件驅動 | 與 Kafka 概念同構 | 面試時說明差異(ordering key vs partition、subscription vs consumer group) |
+| Kafka 事件驅動 | 台灣業界 message queue 主流 | 「outbox + Kafka + effectively-once」是金融/支付面試標準題組(ADR 0002) |
 | OpenTelemetry | 廠商中立標準 | 可遷移到任何後端 |
 
 ## 4. 核心不變量(任何 PR 不得違反)
@@ -118,7 +119,7 @@ reconciler 與(選配的)redpacket 才是獨立 deployable。
 6. **DB 寫入與事件發布同交易**:業務寫入與 outbox 寫入必須在同一個
    DB transaction(同一個 `@Transactional` 邊界);
    禁止「先寫 DB 再直接 publish」的雙寫。
-7. **消費端 effectively-once**:所有 Pub/Sub consumer 必須以冪等鍵
+7. **消費端 effectively-once**:所有 Kafka consumer 必須以冪等鍵
    容忍 at-least-once 的重複投遞。
 
 ## 5. 資料模型(骨架)
@@ -152,10 +153,10 @@ outbox_events(id, aggregate_type, aggregate_id, event_type,
 > 文件缺一章 = 該 Phase 未完成,即使功能能跑。
 
 ### Phase 0 — 骨架與基礎設施(先行,約 2 週)
-- Gradle monorepo 結構、Spring Boot 服務骨架、OpenAPI 契約雛形、
-  本地 docker-compose(MySQL 8 + Pub/Sub emulator)、Flyway 遷移工具鏈
+- Maven monorepo 結構、Spring Boot 服務骨架、OpenAPI 契約雛形、
+  本地 docker-compose(MySQL 8 + Kafka KRaft 單節點)、Flyway 遷移工具鏈
 - Terraform 定義 GCP 基礎資源;GitHub Actions:lint + test + build image
-- DoD 文件:`docs/adr/0002-architecture-overview.md`
+- DoD 文件:`docs/adr/0003-architecture-overview.md`
 
 ### Phase 1 — 單體正確性:wallet + double-entry ledger(核心,約 6 週)
 - 開戶、充值、轉帳、提現;全部走單機 DB transaction(`@Transactional`)
@@ -173,9 +174,10 @@ outbox_events(id, aggregate_type, aggregate_id, event_type,
 - **量化數據**:注入 N 種漂移場景的偵測率 100%
 - DoD 文件:`docs/design/reconciliation.md`
 
-### Phase 3 — 拆分:outbox + Pub/Sub + 可觀測性(約 6 週)
-- outbox relay → Pub/Sub;通知類 / 投影類 consumer 落地 effectively-once
-- OpenTelemetry trace 貫穿 HTTP → DB → Pub/Sub;Prometheus 指標;
+### Phase 3 — 拆分:outbox + Kafka + 可觀測性(約 6 週)
+- 雲端 Kafka 部署方式先以 ADR 定案(managed vs GKE 自架,見 ADR 0002)
+- outbox relay → Kafka;通知類 / 投影類 consumer 落地 effectively-once
+- OpenTelemetry trace 貫穿 HTTP → DB → Kafka;Prometheus 指標;
   Grafana dashboard(RED metrics + 業務指標:入帳延遲、對帳漂移數)
 - 定義 SLO:transfer API p99 < 300ms、可用性 99.9%、
   事件端到端延遲 p95 < 5s

@@ -19,8 +19,8 @@
 1. **目標市場**:台灣後端職缺,金融/支付/電商金流領域對口。
 2. **技術棧**:Java 21 LTS + Spring Boot 3;持久層統一用 **MyBatis**(顯式 SQL,
    延續原 sqlc「每條 SQL 可審計」的精神,亦為台灣金融業主流);API 改為
-   **REST + OpenAPI**(springdoc);Flyway 管 schema 遷移;Gradle 建置;
-   JUnit 5 + Testcontainers 測試。
+   **REST + OpenAPI**(springdoc);Flyway 管 schema 遷移;Maven 建置
+   (Jeff 指定,亦為台灣金融業主流);JUnit 5 + Testcontainers 測試。
 3. **雲端維持 GCP**:GKE + Cloud SQL for MySQL 8 + Pub/Sub + Terraform,
    與 Jeff 的 GCP PCA 證照互相背書(Jeff 明確指定保留)。
 4. **協作模式**:改為「設計共議 + Claude 實作 + PR 導讀」。架構與重大取捨
