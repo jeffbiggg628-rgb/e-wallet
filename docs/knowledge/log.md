@@ -2,6 +2,9 @@
 
 Chronological update history, newest first.
 
+- 2026-07-15:新增 wiki/kafka-basics.md——Task 2 首次引入 Kafka 的講解義務
+  write-back,含 advertised.listeners 實戰坑(host 9092 被舊專案程序佔用)。
+
 - 2026-07-15:新增 wiki/flyway-schema-migration.md——Jeff 提問「Flyway
   是幹嘛的」的 write-back;wiki 第一篇。
 
