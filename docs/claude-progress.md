@@ -2,33 +2,38 @@
 
 ## Current position
 
-- **Phase**:0(骨架與基礎設施)——設計已定案並經 Jeff 批准
-  (`docs/knowledge/discussions/2026-07-15-phase0-java-design.md`),
-  事件層改用 Kafka(ADR 0002)。
-- **Current task**:Phase 0 Task 1(Maven 骨架)已實作完成並開
-  PR #2(feat/maven-skeleton),等 Jeff review 導讀後 merge;
-  merge 後接 Task 2(本地環境:compose + Flyway + MyBatis)。
-  版本決策:Spring Boot 3.5.16(Jeff 拍板,對口台灣存量市場;
-  4.x 已 GA,升版留作日後素材)。實作計畫:`docs/plans/2026-07-15-phase0.md`。
+- **Phase**:0(骨架與基礎設施)——實作計畫 `docs/plans/2026-07-15-phase0.md`,
+  6 個 Task,一個 Task 一個 PR。
+- **Current task**:Task 2(本地環境)完成並開 PR #4(feat/local-dev-env),
+  等 Jeff review 導讀後 merge;merge 後接 Task 3(Dockerfile + CI 三 job)。
 
 ## Verified done
 
-- 2026-07-15:Phase 0 架構討論完成——Maven 多模組(依部署單位切)、
-  wallet 內部 api/internal 純慣例邊界(Jeff 否決驗證工具)、
-  compose(MySQL 8 + Kafka KRaft)、CI 三 job、apply-verify-destroy 沿用、
-  事件層 Pub/Sub → Kafka(ADR 0002)。相關文件全部更新並提交。
-- 2026-07-15:專案轉向(ADR 0001)——台灣市場、Java 21 + Spring Boot 3 +
-  MyBatis + Maven、Claude 實作 + PR 導讀、文件全中文化。
-- 2026-07-13:Repo 初始化。尚無程式碼。
+- 2026-07-15:**Task 2** 完成(PR #4)——docker-compose(MySQL 8 + Kafka
+  KRaft 雙 listener,host 走 19092)、Flyway V1 五張核心表、MyBatis 接線、
+  SchemaSmokeIT(Testcontainers 真 MySQL,先紅後綠)。`mvn verify` 全綠;
+  應用連 compose MySQL 啟動 health UP;全新 broker topic 乾淨。
+  插曲:host 9092 被舊專案程序(java PID 11799/17092 + ssh tunnel)佔用,
+  對外埠改 19092 並關 auto-create topics;Jeff 的程序未動。
+  Write-back:wiki/kafka-basics.md。
+- 2026-07-15:**Task 1** 完成(PR #2,已 merge)——Maven 多模組骨架
+  (parent + libs/common + app/wallet)、ping API、actuator、springdoc、
+  Spotless/Checkstyle。`mvn verify` 綠、三端點實測通過。
+  版本決策:Spring Boot 3.5.16(Jeff 拍板;4.x 已 GA,升版留作日後素材)。
+- 2026-07-15:Phase 0 設計定案 + 專案轉向(ADR 0001/0002),文件 PR #3 已 merge。
+- 2026-07-13:Repo 初始化。
 
 ## Next up
 
-- 寫 Phase 0 實作計畫並開始執行第一個 PR(Maven parent + wallet 骨架)。
+- Task 3:Dockerfile(multi-stage)+ GitHub Actions 三 job
+  (lint / test / build-image)+ branch protection required checks。
 
 ## Open questions
 
 -(留待 Phase 3 前)雲端 Kafka 部署方式:GCP Managed Service for
   Apache Kafka vs GKE 自架單節點,以 ADR 定案(ADR 0002 決策第 3 點)。
+- Jeff 機器上佔 9092 的舊專案程序(java PID 11799/17092、ssh tunnel)
+  要不要關,由 Jeff 決定;我們已改用 19092 不受影響。
 
 ## 協作提醒
 
