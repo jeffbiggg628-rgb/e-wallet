@@ -5,8 +5,11 @@
 - **Phase**:0(骨架與基礎設施)——設計已定案並經 Jeff 批准
   (`docs/knowledge/discussions/2026-07-15-phase0-java-design.md`),
   事件層改用 Kafka(ADR 0002)。
-- **Current task**:撰寫 Java 版 Phase 0 實作計畫(`docs/plans/`,
-  以 PR 為單位切分,Claude 實作視角),完成後開始 Task 執行。
+- **Current task**:Phase 0 Task 1(Maven 骨架)已實作完成並開
+  PR #2(feat/maven-skeleton),等 Jeff review 導讀後 merge;
+  merge 後接 Task 2(本地環境:compose + Flyway + MyBatis)。
+  版本決策:Spring Boot 3.5.16(Jeff 拍板,對口台灣存量市場;
+  4.x 已 GA,升版留作日後素材)。實作計畫:`docs/plans/2026-07-15-phase0.md`。
 
 ## Verified done
 

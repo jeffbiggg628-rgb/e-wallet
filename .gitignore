@@ -3,9 +3,9 @@
 *.tfvars
 *.json.key
 
-# Go
-/bin/
-coverage.out
+# Java / Maven
+target/
+*.class
 
 # Terraform
 .terraform/
