@@ -2,21 +2,30 @@
 
 ## Current position
 
-- **Phase**: 0 (Skeleton & infrastructure) — spec approved by Jeff; implementation plan
-  ready at `docs/plans/2026-07-13-phase0.md` (13 tasks, one PR each, Jeff implements)
-- **Current task**: Jeff starts plan Task 0 (toolchain) and Task 1 (GitHub repo + PR flow)
+- **Phase**:專案轉向完成(2026-07-15)——目標市場改台灣、技術棧改
+  Java 21 + Spring Boot 3 + MyBatis、協作模式改為 Claude 實作 + PR 導讀。
+  詳見 `docs/adr/0001-pivot-to-java-taiwan.md`。
+- **Current task**:與 Jeff 討論 Java 版 Phase 0 設計
+  (Gradle monorepo 結構、Spring Boot 骨架、docker-compose、Flyway、
+  Terraform、CI),定案後重寫 Phase 0 實作計畫。
 
 ## Verified done
 
-- 2026-07-13: Repo initialized with CLAUDE.md, plan copy (`docs/ewallet-portfolio-plan.md`),
-  and empty knowledge base scaffold. No code exists yet.
+- 2026-07-15:轉向文件全部改寫完成——ADR 0001、
+  `docs/ewallet-portfolio-plan.md`(Java 版)、`CLAUDE.md`(新協作模式)、
+  知識庫 index/log 更新。原 Go 版 Phase 0 計畫標記作廢。
+- 2026-07-13:Repo 初始化(CLAUDE.md、計畫文件、知識庫骨架)。尚無程式碼。
 
 ## Next up
 
-- Discuss and agree on the Phase 0 monorepo layout (directory structure, module boundaries)
-  before Jeff writes anything.
+- Java 版 Phase 0 設計討論:Gradle 專案佈局(單 repo 多模組 vs 單模組)、
+  Spring Boot 版本與起手依賴、本地開發環境(docker-compose:MySQL 8 +
+  Pub/Sub emulator)、CI job 切分、Terraform 最小成本策略是否沿用
+  (apply-verify-destroy)。
+- 定案後重寫 `docs/plans/` 下的 Phase 0 實作計畫(中文,Claude 實作視角:
+  以 PR 為單位切分,每個 PR 附導讀)。
 
 ## Open questions
 
-- (resolved 2026-07-13) Plan §6 Phase 0 said Postgres in docker-compose; Jeff confirmed
-  MySQL 8 everywhere. Plan doc fixed.
+- 原 Go 版 Phase 0 設計中的最小成本 Terraform 策略($300 GCP credits,
+  apply-verify-destroy)是否沿用?待 Phase 0 設計討論時與 Jeff 確認。
