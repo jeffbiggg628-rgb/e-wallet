@@ -4,12 +4,18 @@
 
 - **Phase**:0(骨架與基礎設施)——實作計畫 `docs/plans/2026-07-15-phase0.md`,
   6 個 Task,一個 Task 一個 PR。
-- **Current task**:Task 2(本地環境)完成並開 PR #4(feat/local-dev-env),
-  等 Jeff review 導讀後 merge;merge 後接 Task 3(Dockerfile + CI 三 job)。
+- **Current task**:Task 3(CI)完成並開 PR #5(feat/ci-pipeline),
+  CI 三 job 首跑全綠;等 Jeff review 後 merge,接 Task 4(Terraform)。
 
 ## Verified done
 
-- 2026-07-15:**Task 2** 完成(PR #4)——docker-compose(MySQL 8 + Kafka
+- 2026-07-15:**Task 3** 完成(PR #5)——multi-stage Dockerfile(JRE runtime、
+  非 root)、GitHub Actions 三 job(lint 27s / test 1m07s / build-image 1m01s
+  首跑全綠)、main ruleset 加上三個 required status checks(gh api 設定)。
+  本地 image 實測:連 compose MySQL、health UP、whoami=appuser。
+  9092 事件收尾:汙染源(搶票系統 order/seckill 殘留服務)已關,
+  Kafka 回 9092;lsof 的 ssh 是 Colima port-forward,未動。
+- 2026-07-15:**Task 2** 完成(PR #4,已 merge)——docker-compose(MySQL 8 + Kafka
   KRaft 雙 listener,host 走 19092)、Flyway V1 五張核心表、MyBatis 接線、
   SchemaSmokeIT(Testcontainers 真 MySQL,先紅後綠)。`mvn verify` 全綠;
   應用連 compose MySQL 啟動 health UP;全新 broker topic 乾淨。
@@ -25,8 +31,9 @@
 
 ## Next up
 
-- Task 3:Dockerfile(multi-stage)+ GitHub Actions 三 job
-  (lint / test / build-image)+ branch protection required checks。
+- Task 4:Terraform GCP 基礎(GCS backend、Artifact Registry、
+  GKE Autopilot @ asia-east1、Cloud SQL MySQL 8、workload identity SA)
+  + CI 加 tf-validate job。需要 Jeff 的 GCP 專案資訊與 gcloud 登入。
 
 ## Open questions
 
