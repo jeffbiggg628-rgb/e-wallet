@@ -5,6 +5,9 @@
 
 ## wiki/ (compiled knowledge)
 
+- [kafka-basics.md](wiki/kafka-basics.md) — Kafka 心智模型(log 不是 queue)、
+  topic/partition/consumer group/offset、KRaft、advertised.listeners 經典坑
+  (含本專案 9092 被佔的實戰)、三題面試問答。
 - [flyway-schema-migration.md](wiki/flyway-schema-migration.md) —
   Flyway 是什麼:schema drift 問題、檔名即版本/DB 記帳/舊腳本不可改
   三機制、與 ledger append-only 哲學的呼應、面試問答(vs Liquibase)。
